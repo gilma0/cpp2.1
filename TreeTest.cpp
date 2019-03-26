@@ -46,20 +46,27 @@ int main() {
   .CHECK_OK    (threetree.print())
 
   .CHECK_EQUAL (mytree.size(), 5)
-    .CHECK_OK    (mytree.insert(12))
-    .CHECK_EQUAL (mytree.size(), 3)
-    .CHECK_EQUAL (mytree.contains(8), true)
-    .CHECK_OK    (mytree.remove(12))
-    .CHECK_EQUAL (mytree.contains(45), false)
-    .CHECK_THROWS(mytree.remove(5))
-    .CHECK_EQUAL (mytree.size() ,6)
-	.CHECK_OK    (mytree.insert(12))
-	.CHECK_OK    (mytree.insert(15))
-	.CHECK_OK    (mytree.insert(18))
-	.CHECK_OK    (mytree.insert(12))
-	.CHECK_EQUAL (mytree.contains(13), false)
-	.CHECK_EQUAL (mytree.contains(12), true)
-	.CHECK_EQUAL (mytree.size() ,8)
+  .CHECK_THROWS(mytree.insert(5))
+  .CHECK_EQUAL (mytree.size, 5)
+  .CHECK_EQUAL (mytree.contains(10), true)
+  .CHECK_EQUAL (mytree.contains(84), false)
+  .CHECK_OK    (emptytree.remove(5))
+  .CHECK_EQUAL (mytree.size, 4)
+  .CHECK_OK    (emptytree.remove(5)) //checking second time to see for errors
+  .CHECK_EQUAL (mytree.size, 4)
+  .CHECK_EQUAL (mytree.contains(5), false)
+  .CHECK_THROWS(mytree.insert(45))
+  .CHECK_EQUAL (mytree.size(), 5)
+  .CHECK_EQUAL (mytree.contains(45), true)
+  .CHECK_EQUAL (mytree.right(45), NULL)
+  .CHECK_EQUAL (mytree.left(45), NULL)
+  .CHECK_EQUAL (mytree.parent(45), 12)
+  .CHECK_EQUAL (mytree.root(), 10)
+  .CHECK_OK    (emptytree.remove(10))
+  .CHECK_EQUAL (mytree.root(), 12)
+
+
+
   .print();
 
   cout << "You have " << tc.right() << " right answers and " << tc.wrong() << " wrong answers so your grade is " << tc.grade() << ". Great!" << endl;
