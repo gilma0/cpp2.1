@@ -12,7 +12,6 @@ struct Node{
 };
 
 
-
 namespace ariel{
 
 	Node* Root;
@@ -21,6 +20,10 @@ namespace ariel{
 	Tree::Tree(){
 		Root = NULL;
 		num = 0;
+	}
+
+	Tree::~Tree(){
+
 	}
 
 
@@ -34,14 +37,18 @@ namespace ariel{
 					num++;
 				}
 				else{
-					Insert (a, Root, NULL);
+					try{
+						Insert (a, Root, NULL);
+					}catch(string s){
+						cerr<<s;
+					}
 				}
 	}
 
 	void Tree::Insert(int a, Node* now, Node* par){
 			if(a == now->data){
-					cout<<"already here\n";
-					return;
+				throw string("already here");
+				return;
 				}
 				else{
 					if(a > now->data){
@@ -159,12 +166,16 @@ namespace ariel{
 	}
 
 
-};
-/*
 
-int main(){
-	Tree *aba = new Tree();
-	aba->insert(5);
+};
+
+
+/*int main(){
+	ariel::Tree* abs = new ariel::Tree();
+	Node* kaka = NULL;
+	abs->Contains(5, kaka);
+	abs->insert(5);
+
 	aba->insert(6);
 	aba->insert(4);
 	aba->insert(3);
@@ -175,5 +186,7 @@ int main(){
 	aba->buildTree(aba->Root,100, 10);
 	//cout<<aba->Root->left->left->parent->data;
 	//cout<<aba->parent(3);
+
+
 	return 0;
 }*/
