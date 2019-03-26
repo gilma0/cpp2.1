@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-using namespace std;
 
 namespace ariel{
 
@@ -13,13 +12,19 @@ struct Node{
 
 
 class Tree{
+
+	Node *Root;
+	int num;
+
+	void Insert(int a, Node* now, Node* par);
+	Node *Contains(int key, Node *leaf);
+
 public:
 	Tree();
+	~Tree();
 	void insert(int a);
-	void Insert(int a, Node* now, Node* par);
 	int size();
 	bool contains(int a);
-	Node *Contains(int key, Node *leaf);
 	int parent (int a);
 	int right (int a);
 	int left (int a);
@@ -27,7 +32,6 @@ public:
 	void print();
 	int root();
 
-	Node *Root;
-	int num;
+
 };
 }
