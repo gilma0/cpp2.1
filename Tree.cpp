@@ -38,14 +38,14 @@ namespace ariel{
 				}
 				else{
 					try{
-						Insert (a, Root, NULL);
+						Insert (a, Root);
 					}catch(string s){
 						cerr<<s;
 					}
 				}
 	}
 
-	void Tree::Insert(int a, Node* now, Node* par){
+	void Tree::Insert(int a, Node* now){
 			if(a == now->data){
 				throw string("already here");
 				return;
@@ -55,13 +55,13 @@ namespace ariel{
 						if(now->right == NULL){
 							now->right = new Node;
 							now->right->data = a;
-							now->parent = par;
+							now->right->parent = now;
 							now->right->right = NULL;
 							now->right->left = NULL;
 							num++;
 						}
 						else{
-							Insert(a, now->right, now);
+							Insert(a, now->right);
 						}
 					}
 					else{
@@ -69,12 +69,12 @@ namespace ariel{
 							now->left = new Node;
 							now->left->data = a;
 							now->left->right = NULL;
-							now->parent = par;
+							now->left->parent = now;
 							now->left->left = NULL;
 							num++;
 						}
 						else{
-							Insert(a, now->left, now);
+							Insert(a, now->left);
 						}
 					}
 				}
@@ -106,13 +106,13 @@ namespace ariel{
 		}
 
 	int Tree::parent (int a){
-		return 0;//Contains(a, Root)->parent->data;
+		return Contains(a, Root)->parent->data;
 	}
 	int Tree::right (int a){
-		return 0;//Contains(a, Root)->right->data;
+		return Contains(a, Root)->right->data;
 	}
 	int Tree::left (int a){
-		return 0;//Contains(a, Root)->left->data;
+		return Contains(a, Root)->left->data;
 	}
 
 	void Tree::remove(int a){
@@ -169,12 +169,16 @@ namespace ariel{
 
 };
 
+/*
 
-/*int main(){
+int main(){
 	ariel::Tree* abs = new ariel::Tree();
-	Node* kaka = NULL;
-	abs->Contains(5, kaka);
 	abs->insert(5);
+	abs->insert(6);
+	abs->insert(4);
+	cout<<abs->parent(6);
+	//cout<<abs->parent(6);
+
 
 	aba->insert(6);
 	aba->insert(4);
@@ -188,5 +192,7 @@ namespace ariel{
 	//cout<<aba->parent(3);
 
 
+
 	return 0;
-}*/
+}
+*/
