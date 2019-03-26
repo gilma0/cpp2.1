@@ -16,7 +16,7 @@ class Tree{
 	Node *Root;
 	int num;
 
-	void Insert(int a, Node* now, Node* par);
+	void Insert(int a, Node* now);
 	Node *Contains(int key, Node *leaf);
 
 public:
