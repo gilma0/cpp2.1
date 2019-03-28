@@ -50,17 +50,17 @@ int main() {
   .CHECK_EQUAL (mytree.size(), 5)
   .CHECK_EQUAL (mytree.contains(10), true)
   .CHECK_EQUAL (mytree.contains(84), false)
-  .CHECK_OK    (emptytree.remove(5))
+  .CHECK_OK    (mytree.remove(5))
   .CHECK_EQUAL (mytree.size(), 4)
-  .CHECK_OK    (emptytree.remove(5)) //checking second time to see for errors
+  .CHECK_THROWS(mytree.remove(5)) //checking second time to see for errors
   .CHECK_EQUAL (mytree.size(), 4)
   .CHECK_EQUAL (mytree.contains(5), false)
-  .CHECK_THROWS(mytree.insert(45))
+  .CHECK_OK    (mytree.insert(45))
   .CHECK_EQUAL (mytree.size(), 5)
   .CHECK_EQUAL (mytree.contains(45), true)
   .CHECK_EQUAL (mytree.parent(45), 12)
   .CHECK_EQUAL (mytree.root(), 10)
-  .CHECK_OK    (emptytree.remove(10))
+  .CHECK_OK    (mytree.remove(10))
   .CHECK_EQUAL (mytree.root(), 12)
 
 
