@@ -122,13 +122,13 @@ namespace ariel{
 	}
 
 	void Tree::remove(int a){
-		Node* temp = Contains(a, Root); //finding the node to remove
+		/*Node* temp = Contains(a, Root); //finding the node to remove
 		if(temp == NULL){ //exception if the node isn't in the tree
 			throw string("not found");
 		}
 		remove(temp); //function to actually delete the node
 		num--; //update tree size
-		return;
+		return;*/
 		}
 
 	void Tree::remove(Node* leaf){
