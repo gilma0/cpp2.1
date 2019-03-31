@@ -13,14 +13,15 @@ struct Node{
 
 class Tree{
 
-
 	int num;
+	Node *Root;
 
 	void Insert(int a, Node* now);
 	Node *Contains(int key, Node *leaf);
-	void remove(int a, Node* leaf);
+	void remove(Node* leaf);
 	Node* closest(Node* now);
 	void destroyTree(Node* leaf);
+	Node* find(int a);
 	void print(Node* leaf);
 
 public:
@@ -35,9 +36,7 @@ public:
 	void remove(int a);
 	void print();
 	int root();
-	void buildTree(Node* root, int scrWidth, int itemWidth);
-	Node *Root;
-
+	//void buildTree(Node* Root,int a, int b);
 
 };
 }
