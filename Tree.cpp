@@ -18,9 +18,9 @@ namespace ariel{
 
 	Tree::~Tree(){
 		destroyTree(Root);
-		delete(this);
 	}
-	void Tree::destroyTree(Node* leaf){
+
+	void Tree::destroyTree(Node* leaf){ //recursive call to free memory
 		if (leaf == NULL) {
 			return;
 		}
@@ -33,7 +33,7 @@ namespace ariel{
 
 
 	void Tree::insert(int a){
-		if (Root == NULL){
+		if (Root == NULL){ //root option
 			Root = new Node;
 			Root->data = a;
 			Root->right = NULL;
@@ -41,20 +41,15 @@ namespace ariel{
 			Root->parent = NULL;
 			num++;
 		}else{
-			try{
-				Insert (a, Root);
-			}catch(string s){
-				cerr<<s;
-			}
+			Insert (a, Root); //get to right place if there is a root
 		}
 	}
 
 	void Tree::Insert(int a, Node* now){
-		if(a == now->data){
-			throw string("already here");
-			return;
+		if(a == now->data){ //exception if node already here
+			throw string("already here\n");
 		}else{
-			if(a > now->data){
+			if(a > now->data){ //finding the right place for the node
 				if(now->right == NULL){
 					now->right = new Node;
 					now->right->data = a;
@@ -63,10 +58,10 @@ namespace ariel{
 					now->right->left = NULL;
 					num++;
 				}else{
-					Insert(a, now->right);
+					Insert(a, now->right); //going to next node if there's a need
 				}
 			}else{
-				if(now->left == NULL){
+				if(now->left == NULL){ //other option, same as before just to left side
 					now->left = new Node;
 					now->left->data = a;
 					now->left->right = NULL;
@@ -80,108 +75,125 @@ namespace ariel{
 		}
 	}
 
-	int Tree::size(){
+	int Tree::size(){ //number of nodes
 		return num;
 	}
 
 	bool Tree::contains(int a){
-		if(Contains(a, Root) == NULL){
+		if(Contains(a, Root) == NULL){ //sending for a function to find the node
 			return false;
 		}
 		return true;
 		}
-	Node* Tree::Contains(int key, Node *leaf){
-			if(leaf != NULL){
-				if(key == leaf->data){
-					return leaf;
-				}
-				if(key < leaf->data){
-					return Contains(key, leaf->left);
-				}else{
-					return Contains(key, leaf->right);
-				}
-			}else{
-				return NULL;
-			}
-		}
 
-	int Tree::parent (int a){
-		return Contains(a, Root)->parent->data;
+	Node* Tree::Contains(int key, Node *leaf){
+		if(leaf != NULL){ //if there are still nodes to check
+			if(key == leaf->data){ //found the node
+				return leaf;
+			}
+			if(key < leaf->data){ //checking to the right and left
+				return Contains(key, leaf->left);
+			}else{
+				return Contains(key, leaf->right);
+			}
+		}else{
+			return NULL;
+		}
 	}
-	int Tree::right (int a){
-		return Contains(a, Root)->right->data;
+
+	Node* Tree::find(int a){
+		Node* temp = Contains(a, Root); //finding the right node
+		if (temp == NULL){ //exception throw if there's a need
+			throw string("fail");
+		}
+		return temp;
 	}
-	int Tree::left (int a){
-		return Contains(a, Root)->left->data;
+
+
+
+	int Tree::parent (int a){ //return the data of the node parent
+		return find(a)->parent->data;
+	}
+	int Tree::right (int a){ //return the data of the node right son
+		return find(a)->right->data;
+	}
+	int Tree::left (int a){ //return the data of the node left son
+		return find(a)->left->data;
 	}
 
 	void Tree::remove(int a){
-		Node* temp = Contains(a, Root);
-		remove(a, temp);
-		num--;
+		Node* temp = Contains(a, Root); //finding the node to remove
+		if(temp == NULL){ //exception if the node isn't in the tree
+			throw string("not found");
+		}
+		remove(temp); //function to actually delete the node
+		num--; //update tree size
 		return;
 		}
 
-	void Tree::remove(int a, Node* leaf){
-		if (leaf->right == NULL && leaf->left == NULL){
-			if (leaf->data == Root->data){
+	void Tree::remove(Node* leaf){
+		if (leaf->right == NULL && leaf->left == NULL){ //in case that the node doesn't have sons
+			if (leaf->data == Root->data){ //in case node is root
 				Root = NULL;
 				delete(leaf);
 				return;
 			}
-			if (leaf->parent->right->data == leaf->data){
-				leaf->parent->right = NULL;
+			if (leaf->parent->right->data == leaf->data){ //updating the father
+				leaf->parent->right = NULL; //if node is right son
 			}else{
-				leaf->parent->left = NULL;
+				leaf->parent->left = NULL; //if node is left son
 			}
 			delete(leaf);
 			return;
 		}
-		if (leaf->right == NULL){
-			if (leaf->data == Root->data){
-				Root = leaf->left;
+		if (leaf->right == NULL){ //node to delete has a right son
+			if (leaf->data == Root->data){ //checking if the node to delete is root
+				Root = leaf->left; //update root
 				delete(leaf);
 				return;
 			}
-			if (leaf->parent->right->data == leaf->data){
-				leaf->parent->right = leaf->left;
+			if (leaf->parent->right->data == leaf->data){ //checking if node is right or left son of father
+				leaf->parent->right = leaf->left; //update father
 			}else{
-				leaf->parent->left = leaf->left;
+				leaf->parent->left = leaf->left; //else case update father
 			}
 			delete(leaf);
 			return;
 		}
-		if (leaf->left == NULL){
-			if (leaf->data == Root->data){
-				Root = leaf->right;
+		if (leaf->left == NULL){ //node to delete has a right son
+			if (leaf->data == Root->data){ //checking if the node to delete is root
+				Root = leaf->right; //update root
 				delete(leaf);
 				return;
 			}
-			if (leaf->parent->right->data == leaf->data){
-				leaf->parent->right = leaf->right;
+			if (leaf->parent->right->data == leaf->data){ //checking if node is right or left son of father
+				leaf->parent->right = leaf->right; //update father
 			}else{
-				leaf->parent->left = leaf->right;
+				leaf->parent->left = leaf->right; //else case update father
 			}
 			delete(leaf);
 			return;
 		}
-		Node* temp = closest(leaf->right);
-		if (temp->right != NULL){
-			leaf->right = temp->right;
+		Node* temp = closest(leaf->right); //getting the next bigger node
+		if (temp->right != NULL){ //checking if the next bigger node has a right son
+			leaf->right = temp->right; //getting the son to the right place
 		}
-		leaf->data = temp->data;
-		delete(temp);
+		leaf->data = temp->data; //update the deleted node data
+		delete(temp); //removing the temp node
 		return;
 	}
 
 
-
-	Node* Tree::closest(Node* now){
-		if (now->left == NULL && now->right == NULL){
-			now->parent->left = NULL;
+	Node* Tree::closest(Node* now){ //getting the next bigger node
+		if (now->left == NULL && now->right == NULL){ //gotten to a leaf
+			if (now->parent->left->data == now->data){ //checking which son is the leaf
+				now->parent->left = NULL; //left case
+			}else{
+				now->parent->right = NULL; //right case
+			}
 			return now;
 		}else{
-			if (now->left != NULL){
+			if (now->left != NULL){ //recursive call if there is a smaller next bigger
 				closest(now->left);
 			}else{
 				return now;
@@ -192,7 +204,7 @@ namespace ariel{
 	void Tree::print(){
 			print(Root);
 			}
-	void Tree::print(Node* leaf){
+	void Tree::print(Node* leaf){ //print according to left root right
 			if(leaf==NULL){
 				return;
 			}
@@ -202,11 +214,11 @@ namespace ariel{
 		}
 
 
-	int Tree::root(){
+	int Tree::root(){ //return root data
 		return Root->data;
 	}
 
-	void Tree::buildTree(Node* root, int scrWidth, int itemWidth)
+/*	void Tree::buildTree(Node* root, int scrWidth, int itemWidth)
 		// breadth-first traversal with depth limit based on screen width and output field width for one elemet
 		{
 		    bool notFinished = false;
@@ -270,26 +282,33 @@ namespace ariel{
 		        pItems = list; // and shift to new one (for next level)
 		    }
 		    delete[] pItems;
-		}
+		}*/
 
 };
+/*
+
 
 
 
 int main(){
 	ariel::Tree* abs = new ariel::Tree();
 	abs->insert(10);
-	abs->insert(9);
-	abs->insert(11);
-	abs->insert(13);
-	abs->insert(12);
+	abs->insert(5);
 	abs->insert(15);
-	abs->buildTree(abs->Root,100, 10);
-	abs->remove(10);
-	//cout<<abs->size();
-	//abs->insert(5);
+	abs->insert(20);
+	abs->insert(14);
+	abs->remove(15);
 	abs->buildTree(abs->Root,100, 10);
 	cout<<endl;
+	abs->remove(10);
+	abs->buildTree(abs->Root,100, 10);
+	cout<<endl;
+	abs->insert(5);
+	abs->buildTree(abs->Root,100, 10);
+	//cout<<endl;
 	abs->print();
 	return 0;
 }
+*/
+
+
